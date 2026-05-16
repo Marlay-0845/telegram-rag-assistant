@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Windows venv
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# RAG storage
+storage/
+chroma/
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
