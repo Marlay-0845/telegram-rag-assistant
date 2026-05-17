@@ -24,7 +24,7 @@ pyvenv.cfg
 logs/
 *.log
 
-# RAG storage
+# # RAG storage
 storage/
 chroma/
 *.sqlite3
