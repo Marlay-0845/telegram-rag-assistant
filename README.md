@@ -37,6 +37,10 @@ In the config file, replace the directories with your own
 ## Run
 
 ```bash
+python rag/scripts/ingest.py
+```
+
+```bash
 python app/bot.py
 ```
 
