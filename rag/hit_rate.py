@@ -101,9 +101,8 @@ question_rewrite_chain = (
     | StrOutputParser()
 )
 
-file_path = 'C:/Users/Daniil Work/.vscode/rag_tg_support1/rag_tg_project/rag/my_dict.json'
 
-with open(file_path, 'r', encoding='utf-8') as file:
+with open(cf.file_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 

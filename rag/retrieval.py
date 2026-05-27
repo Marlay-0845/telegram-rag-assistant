@@ -9,38 +9,38 @@ vectorstore = vectorstore_manager.get()
 mmr_retriever = vectorstore.as_retriever(
     search_type="mmr",
     search_kwargs={
-        "k": 22,
-        "fetch_k": 32,
+        "k": 8,
+        "fetch_k": 10,
     },
 )
 
 
-def section_retriever(question_and_section):
-    retrieved_docs_from_section = vectorstore.as_retriever(
+async def section_retriever(question_and_section):
+    retrieved_docs_from_section = await vectorstore.as_retriever(
             search_kwargs={
-                    "k": 22,
+                    "k": 8,
                     "filter": {"section": question_and_section.section}
                 }
-            ).invoke(question_and_section.question)
+            ).ainvoke(question_and_section.question)
     
     return retrieved_docs_from_section
 
 
-def retrieve(r_question_and_section, retrieval_mode):
+async def retrieve(r_question_and_section, retrieval_mode):
     if retrieval_mode == SECTION:
-        retrieved_docs = section_retriever(question_and_section=r_question_and_section)
+        retrieved_docs = await section_retriever(question_and_section=r_question_and_section)
     elif retrieval_mode == HYBRID:
-        retrieved_docs_from_section = section_retriever(question_and_section=r_question_and_section)
-        retrieved_docs_from_global = default_retriever(r_question_and_section.question)
+        retrieved_docs_from_section = await section_retriever(question_and_section=r_question_and_section)
+        retrieved_docs_from_global = await default_retriever(r_question_and_section.question)
 
         retrieved_docs = retrieved_docs_from_section + retrieved_docs_from_global
 
         retrieved_docs = get_unique_and_relevant_docs(retrieved_docs)
     else:
-        retrieved_docs = default_retriever(r_question_and_section.question)
+        retrieved_docs = await default_retriever(r_question_and_section.question)
 
     return retrieved_docs
 
 
-def default_retriever(docs):
-    return mmr_retriever.invoke(docs)
+async def default_retriever(docs):
+    return await mmr_retriever.ainvoke(docs)

@@ -38,9 +38,9 @@ rag_chain = (
 
 
 @traceable(name="AW_answer_question")
-def answer_question(question: str, context: str) -> str:
+async def answer_question(question: str, context: str) -> str:
     inputs = {
         "question": question,
         "context": context,
     }
-    return rag_chain.invoke(inputs)
+    return await rag_chain.ainvoke(inputs)

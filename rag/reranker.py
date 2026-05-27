@@ -1,11 +1,10 @@
-import traceback
 from sentence_transformers import CrossEncoder
 
 import rag_tg_project.config as cf
 
 
 
-def reranking_retrieval_docs(query, docs, top_k=8):
+def reranking_retrieval_docs(query, docs, top_k):
     model = CrossEncoder(cf.RERANKING_MODEL)
 
     pairs = [(query, doc.page_content) for doc in docs]

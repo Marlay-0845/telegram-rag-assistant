@@ -7,6 +7,7 @@ persist_directory = 'C:/Users/Daniil Work/.vscode/rag_tg_support1/rag_tg_project
 LLM_MODEL = 'gemma3:4b'
 OLLAMA_BASE_URL_V1 = 'http://127.0.0.1:11434/v1'
 RERANKING_MODEL = 'BAAI/bge-reranker-v2-m3'
+file_path = 'C:/Users/Daniil Work/.vscode/rag_tg_support1/rag_tg_project/rag/my_dict.json'
 
 
 

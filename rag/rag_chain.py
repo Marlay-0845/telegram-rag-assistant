@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from dotenv import load_dotenv
 
@@ -14,31 +15,30 @@ logger = logging.getLogger("rag_tg_project/logs")
 
 
 
-def get_user_question_and_return_answer(user_question):
+async def get_user_question_and_return_answer(user_question):
     logger.info(f"User question: {user_question}")
-    right_question_and_section = rewrite_question_if_needed(question=user_question)
+    right_question_and_section = await rewrite_question_if_needed(question=user_question)
     logger.info(f"Rewrite question: {right_question_and_section.question}")
     logger.info(f"Section for question: {right_question_and_section.section}")
 
     retrieval_mode = check_keywords_in_question(question_and_section=right_question_and_section)
     logger.info(f"Retrieval strategy: {retrieval_mode}")
 
-    retrieved_docs = retrieve(r_question_and_section=right_question_and_section, retrieval_mode=retrieval_mode)
-    
-    scores = reranking_retrieval_docs(query=right_question_and_section.question, docs=retrieved_docs)
-
+    retrieved_docs = await retrieve(r_question_and_section=right_question_and_section, retrieval_mode=retrieval_mode)
     logger.info(f"Docs count: {len(retrieved_docs)}")
-    logger.info(f"Score docs count: {len(scores)}")
 
-    verified = check_retriever_quality(scores)
+    verified = check_retriever_quality(retrieved_docs)
         
     if not verified:
-        retrieved_docs = default_retriever(right_question_and_section.question)
+        retrieved_docs = await default_retriever(right_question_and_section.question)
         logger.info(f"Data reorganization, number of documents: {len(retrieved_docs)}")
+
+    scores = await asyncio.to_thread(reranking_retrieval_docs, right_question_and_section.question, retrieved_docs, 8)
+    logger.info(f"Score docs count: {len(scores)}")
 
     ctx = format_docs(scores)
     logger.info(f"Context len: {len(ctx)}")
 
-    answer = answer_question(question=right_question_and_section.question, context=ctx)
+    answer = await answer_question(question=right_question_and_section.question, context=ctx)
 
     return answer

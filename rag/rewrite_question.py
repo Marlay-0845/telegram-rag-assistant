@@ -59,6 +59,6 @@ question_rewrite_chain = (
 )
 
 
-def rewrite_question_if_needed(question: str):
-    result_model = question_rewrite_chain.invoke({"question": question})
+async def rewrite_question_if_needed(question: str):
+    result_model = await question_rewrite_chain.ainvoke({"question": question})
     return result_model
