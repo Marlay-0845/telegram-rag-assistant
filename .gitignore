@@ -10,7 +10,6 @@ env/
 # Windows venv
 Include/
 Lib/
-Scripts/
 pyvenv.cfg
 
 # Environment
